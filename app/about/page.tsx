@@ -1,4 +1,5 @@
 import { Store, Users, Award, Truck } from "lucide-react"
+import Link from "next/link"
 
 export default function AboutPage() {
   return (
@@ -15,14 +16,16 @@ export default function AboutPage() {
         {/* Main Content */}
         <div className="bg-white rounded-2xl p-8 md:p-12 border border-gray-200 shadow-sm mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Our Story</h2>
-          <div className="text-gray-700 leading-relaxed space-y-4">
+          <div className="text-gray-700 leading-relaxed space-y-4 text-right" dir="rtl">
             <p>
-              Business information will be added soon. This section will contain detailed information about SahStore,
-              our mission, values, and commitment to providing quality products.
+              في SahStore، نُقدِّم لك مجموعة مختارة من الإكسسوارات، وآلات الحلاقة الكهربائية، ومكانس كهربائية لاسلكية
+              (صالحـة للاستخدام في المنزل والسيارة)، إلى جانب مجموعة من منتجات العناية بالسيارات — كل ذلك لنوفِّر لك
+              الأفضل في الراحة العصرية والأسلوب الأنيق.
             </p>
+            <p>من قلب الابتكار، نعمل بجد كي نجعل الأمنيات حقيقة، ونحوّل احتياجاتك اليومية إلى حلول ذكية وعصرية.</p>
             <p>
-              We specialize in accessories, electric trimmers, wireless vacuum cleaners (dual-use for car & home), and
-              car-related products, bringing you the best in modern convenience and style.
+              نحن فخورون بكوننا مقرّنا في الجزائر العاصمة، ونسعى إلى خدمة مجتمعنا بمنتجات تجمع بين الجودة، التصميم،
+              واللمسة المحلية.
             </p>
           </div>
         </div>
@@ -67,9 +70,11 @@ export default function AboutPage() {
           <div className="bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl p-8">
             <h2 className="text-2xl font-bold text-white mb-4">Ready to Shop?</h2>
             <p className="text-purple-100 mb-6">Explore our collection and find the perfect products for your needs.</p>
-            <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-              Browse Products
-            </button>
+            <Link href="/#products">
+              <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+                Browse Products
+              </button>
+            </Link>
           </div>
         </div>
       </div>
