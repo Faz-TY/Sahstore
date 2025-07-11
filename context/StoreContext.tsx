@@ -7,7 +7,8 @@ export interface ProductMedia {
   id: string
   type: "image" | "video"
   url: string
-  file: File
+  fileName: string
+  fileSize: number
 }
 
 export interface Product {
@@ -50,9 +51,17 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined)
 export function StoreProvider({ children }: { children: React.ReactNode }) {
   const [products, setProducts] = useState<Product[]>([])
   const [orders, setOrders] = useState<Order[]>([])
+  const [isClient, setIsClient] = useState(false)
+
+  // Ensure we're on the client side before accessing localStorage
+  useEffect(() => {
+    setIsClient(true)
+  }, [])
 
   // Load data from localStorage on mount
   useEffect(() => {
+    if (!isClient) return
+
     const savedProducts = localStorage.getItem("sahstore-products")
     const savedOrders = localStorage.getItem("sahstore-orders")
 
@@ -71,17 +80,19 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
         console.error("Error loading orders:", error)
       }
     }
-  }, [])
+  }, [isClient])
 
   // Save products to localStorage whenever products change
   useEffect(() => {
+    if (!isClient) return
     localStorage.setItem("sahstore-products", JSON.stringify(products))
-  }, [products])
+  }, [products, isClient])
 
   // Save orders to localStorage whenever orders change
   useEffect(() => {
+    if (!isClient) return
     localStorage.setItem("sahstore-orders", JSON.stringify(orders))
-  }, [orders])
+  }, [orders, isClient])
 
   const addProduct = (productData: Omit<Product, "id" | "createdAt">) => {
     const newProduct: Product = {

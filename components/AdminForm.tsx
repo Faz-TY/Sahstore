@@ -87,7 +87,8 @@ export default function AdminForm() {
         id: `media_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         type: isImage ? "image" : "video",
         url: URL.createObjectURL(file),
-        file: file,
+        fileName: file.name,
+        fileSize: file.size,
       }
 
       setFormData((prev) => ({

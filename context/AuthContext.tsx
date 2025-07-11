@@ -2,7 +2,6 @@
 
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
-import { useRouter } from "next/navigation"
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -14,21 +13,27 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const router = useRouter()
+  const [isClient, setIsClient] = useState(false)
 
-  // Check if user was previously authenticated (persist across page refreshes)
   useEffect(() => {
-    const authStatus = localStorage.getItem("sahstore-admin-auth")
+    setIsClient(true)
+  }, [])
+
+  useEffect(() => {
+    if (!isClient) return
+
+    const authStatus = localStorage.getItem("sahstore-auth")
     if (authStatus === "true") {
       setIsAuthenticated(true)
     }
-  }, [])
+  }, [isClient])
 
-  const login = (password: string): boolean => {
+  const login = (password: string) => {
     if (password === "ReYou") {
       setIsAuthenticated(true)
-      localStorage.setItem("sahstore-admin-auth", "true")
-      router.push("/admin")
+      if (isClient) {
+        localStorage.setItem("sahstore-auth", "true")
+      }
       return true
     }
     return false
@@ -36,8 +41,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = () => {
     setIsAuthenticated(false)
-    localStorage.removeItem("sahstore-admin-auth")
-    router.push("/login")
+    if (isClient) {
+      localStorage.removeItem("sahstore-auth")
+    }
   }
 
   return <AuthContext.Provider value={{ isAuthenticated, login, logout }}>{children}</AuthContext.Provider>
